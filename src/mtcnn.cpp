@@ -7,7 +7,13 @@
  */
 
 #include "mtcnn.h"
+
 #include "det1_param.h"
+#include "det2_param.h"
+#include "det3_param.h"
+#include "det1_mem.h"
+#include "det2_mem.h"
+#include "det3_mem.h"
 
 bool cmpScore(Bbox lsh, Bbox rsh) {
 	if (lsh.score < rsh.score)
@@ -23,30 +29,52 @@ bool cmpArea(Bbox lsh, Bbox rsh) {
         return true;
 }
 
-//MTCNN::MTCNN(){}
-MTCNN::MTCNN(const string &model_path) {
 
-	std::vector<std::string> param_files = {
-		model_path+"/det1.param",
-		model_path+"/det2.param",
-		model_path+"/det3.param"
-	};
+MTCNN::MTCNN(){
 
-	std::vector<std::string> bin_files = {
-		model_path+"/det1.bin",
-		model_path+"/det2.bin",
-		model_path+"/det3.bin"
-	};
-	
-	cout << "yyyyyyy param_files[0] = " << param_files[0] << endl;
-	
-	Pnet.load_param(param_files[0].data());
-	Pnet.load_model(bin_files[0].data());
-	Rnet.load_param(param_files[1].data());
-	Rnet.load_model(bin_files[1].data());
-	Onet.load_param(param_files[2].data());
-	Onet.load_model(bin_files[2].data());
+    const char *ydwu_pnet = (const char *)models_det1_param_bytes;
+    Pnet.load_param_mem(ydwu_pnet);
+    Pnet.load_model(det1_bin);
+
+//////////////////////////////////////////////////////
+
+
+    const char *ydwu_rnet = (const char *)models_det2_param_bytes;
+    Rnet.load_param_mem(ydwu_rnet);
+    Rnet.load_model(det2_bin);
+
+//////////////////////////////////////////////////////
+
+    const char *ydwu_onet = (const char *)models_det3_param_bytes;
+    Onet.load_param_mem(ydwu_onet);
+    Onet.load_model(det3_bin);
+
 }
+
+// //MTCNN::MTCNN(){}
+// MTCNN::MTCNN(const string &model_path) {
+
+// 	std::vector<std::string> param_files = {
+// 		model_path+"/det1.param",
+// 		model_path+"/det2.param",
+// 		model_path+"/det3.param"
+// 	};
+
+// 	std::vector<std::string> bin_files = {
+// 		model_path+"/det1.bin",
+// 		model_path+"/det2.bin",
+// 		model_path+"/det3.bin"
+// 	};
+	
+// 	cout << "yyyyyyy param_files[0] = " << param_files[0] << endl;
+	
+// 	Pnet.load_param(param_files[0].data());
+// 	Pnet.load_model(bin_files[0].data());
+// 	Rnet.load_param(param_files[1].data());
+// 	Rnet.load_model(bin_files[1].data());
+// 	Onet.load_param(param_files[2].data());
+// 	Onet.load_model(bin_files[2].data());
+// }
 
 
 MTCNN::MTCNN(const std::vector<std::string> param_files, const std::vector<std::string> bin_files){

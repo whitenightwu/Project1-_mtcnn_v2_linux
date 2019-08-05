@@ -27,11 +27,19 @@ struct Bbox
     float regreCoord[4];
 };
 
+// MTCNN ydwu_face_detector;
+
+// extern int MTCNN();
+// int MTCNN(){
+//     MTCNN ydwu_face_detector;
+//     return 0;
+// }
 
 class MTCNN {
 
 public:
-	MTCNN(const string &model_path);
+  MTCNN();
+	/* MTCNN(const string &model_path); */
     MTCNN(const std::vector<std::string> param_files, const std::vector<std::string> bin_files);
     ~MTCNN();
 	
@@ -62,7 +70,7 @@ private:
     std::vector<Bbox> firstBbox_, secondBbox_,thirdBbox_;
     int img_w, img_h;
 
-private://²¿·Ö¿Éµ÷²ÎÊý
+private://ï¿½ï¿½ï¿½Ö¿Éµï¿½ï¿½ï¿½ï¿½ï¿½
 	const float threshold[3] = { 0.8f, 0.8f, 0.6f };
 	int minsize = 40;
 	const float pre_facetor = 0.709f;
